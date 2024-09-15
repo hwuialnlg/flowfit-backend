@@ -1,4 +1,4 @@
-version: '3'
+version: 'latest'
 services:
 
   flowfit-postgres:
@@ -24,10 +24,10 @@ services:
       - flowfit-postgres
 
   # flowfit-ui:
-  #   build: ./flowfit-ui
+  #   build: ./frontend/flowfit-ui
   #   container_name: flowfit-ui
   #   ports:
-  #     - 4200:80
+  #     - 3000:3000
   #   links:
   #     - flowfit-app
 
