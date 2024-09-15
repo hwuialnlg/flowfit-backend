@@ -4,14 +4,9 @@ from app.template_user.createUser import create_user
 
 app = FastAPI()
 
-# Start FastAPI server
-# Open cmd terminal in VSC
-# cd Scripts
-# .\activate
-# fastapi dev main.py
-
 # HTTP Request Testing
 # Open up the swagger/local server docs
+# or use Insomnia/Postman
 
 # include routers here
 
