@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+  flowfit-postgres:
+    image: "postgres:latest"
+    container_name: flowfit-postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB: ${POSTGRES_DB}
+      - POSTGRES_USER: ${POSTGRES_USER}
+      - POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  flowfit-app:
+    build: ./backend
+    container_name: flowfit-app
+    environment:
+      - DB_SERVER=flowfit-postgres
+    ports:
+      - 8080:8080
+    links:
+      - flowfit-postgres
+
+  # flowfit-ui:
+  #   build: ./flowfit-ui
+  #   container_name: flowfit-ui
+  #   ports:
+  #     - 4200:80
+  #   links:
+  #     - flowfit-app
+
+volumes:
+  postgres-data:
