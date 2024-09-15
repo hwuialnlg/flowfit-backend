@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app.template_user.router import template_user_router
-from app.template_user.createUser import create_user
+from template_user.router import template_user_router
+from template_user.createUser import create_user
 
 app = FastAPI()
 
