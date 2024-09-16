@@ -1,12 +1,11 @@
-from sqlalchemy import Column, Integer, String
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, Date
 from .BaseModel import BaseModel
 
 class User(BaseModel):
     __tablename__ = 'users'
 
     username = Column(String)
-    created_at = Column(datetime)
+    created_at = Column(Date)
     password = Column(String, nullable=False)
-    dob = Column(datetime, nullable=True)
+    dob = Column(Date, nullable=True)
     email = Column(String, primary_key=True)
