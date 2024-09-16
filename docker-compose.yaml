@@ -14,22 +14,18 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
   flowfit-app:
-    build: ./backend
+    build: /app
     container_name: flowfit-app
     environment:
       - DB_SERVER=flowfit-postgres
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 8080:8080
     links:
       - flowfit-postgres
-
-  # flowfit-ui:
-  #   build: ./frontend/flowfit-ui
-  #   container_name: flowfit-ui
-  #   ports:
-  #     - 3000:3000
-  #   links:
-  #     - flowfit-app
+    volumes:
+      - ./app:/app
 
 volumes:
   postgres-data:
