@@ -8,6 +8,11 @@ from sqlalchemy import create_engine
 load_dotenv()
 
 engine = create_engine(f'postgresql+psycopg2://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_SERVER")}:5432/postgres', echo=True)
+
+# if not using docker replace environment variables
+# also, replace the database type + database API driver + last name
+# engine = create_engine(f'postgresql+psycopg2://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_SERVER")}:5432/postgres', echo=True)
+
 SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
