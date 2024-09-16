@@ -6,6 +6,7 @@ class User(BaseModel):
 
     username = Column(String)
     created_at = Column(Date)
+    salt = Column(String)
     password = Column(String, nullable=False)
     dob = Column(Date, nullable=True)
     email = Column(String, primary_key=True)
