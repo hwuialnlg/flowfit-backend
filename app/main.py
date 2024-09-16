@@ -1,6 +1,10 @@
+import os
 from fastapi import FastAPI
-from user.endpoints import router as user_router
+from app.database import Base, engine
+# routers
+from app.endpoints.user_endpoints import router as user_router
 
+Base.metadata.create_all(engine)
 app = FastAPI()
 
 # include other routers here
