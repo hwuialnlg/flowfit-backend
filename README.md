@@ -13,6 +13,7 @@ DB_PORT=5432
 DB_SERVER=localhost
 
 DB_USER=
+
 DB_PASSWORD=
 
 DOCKER_LINK=flowfit-postgres
