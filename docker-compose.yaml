@@ -17,9 +17,13 @@ services:
     build: /app
     container_name: flowfit-app
     environment:
-      - DB_SERVER=flowfit-postgres
+      - DOCKER_SERVICE=${DOCKER_SERVICE}
       - DB_USER=${POSTGRES_USER}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_TYPE=${DB_TYPE}
+      - DB_DRIVER=${DB_DRIVER}
+      - TYPE=${TYPE}
+      - DB_PORT=${DB_PORT}
     ports:
       - 8080:8080
     links:
