@@ -1,14 +1,14 @@
 template env, fill out according to dbs
 
-TYPE=
+TYPE=\n
 
-DB_NAME=postgres
-DB_TYPE=postgres
-DB_DRIVER=psycopg2
-DB_PORT=5432
-DB_SERVER=localhost
+DB_NAME=postgres\n
+DB_TYPE=postgres\n
+DB_DRIVER=psycopg2\n
+DB_PORT=5432\n
+DB_SERVER=localhost\n
 
-DB_USER=
-DB_PASSWORD=
+DB_USER=\n
+DB_PASSWORD=\n
 
-DOCKER_LINK=flowfit-postgres
+DOCKER_LINK=flowfit-postgres\n
