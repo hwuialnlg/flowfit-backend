@@ -1,5 +1,7 @@
 template env, fill out according to dbs
 
+Virtual environment --> install postgresql
+
 docker compose up
 
 TYPE= ("" OR DOCKER)
