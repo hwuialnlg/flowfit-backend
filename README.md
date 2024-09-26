@@ -2,6 +2,8 @@ template env, fill out according to dbs
 
 Virtual environment --> install postgresql
 
+New packages, make a new requirements.txt before commit
+
 docker compose up
 
 TYPE= ("" OR DOCKER)
