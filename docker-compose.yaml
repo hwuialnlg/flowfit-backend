@@ -14,7 +14,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
 
   flowfit-app:
-    build: /app
+    build: ./app
     container_name: flowfit-app
     environment:
       - DOCKER_LINK=${DOCKER_LINK}
