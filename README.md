@@ -1,8 +1,10 @@
 template env, fill out according to dbs
 
-TYPE=
+docker compose up
 
-DB_NAME=postgres
+TYPE= ("" OR DOCKER)
+
+DB_NAME=postgres (whatever you named your db)
 
 DB_TYPE=postgresql
 
