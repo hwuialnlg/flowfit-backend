@@ -2,7 +2,7 @@ template env, fill out according to dbs
 
 Virtual environment --> install postgresql
 
-New packages, make a new requirements.txt before commit
+New packages, make a new requirements.txt before commit (pip freeze > requirements.txt)
 
 docker compose up
 
