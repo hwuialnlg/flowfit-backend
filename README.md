@@ -4,7 +4,7 @@ TYPE=
 
 DB_NAME=postgres
 
-DB_TYPE=postgres
+DB_TYPE=postgresql
 
 DB_DRIVER=psycopg2
 
