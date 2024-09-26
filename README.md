@@ -1,10 +1,16 @@
 template env, fill out according to dbs
 
-TYPE=
+Virtual environment --> install postgresql
 
-DB_NAME=postgres
+New packages, make a new requirements.txt before commit (pip freeze > requirements.txt)
 
-DB_TYPE=postgres
+docker compose up
+
+TYPE= ("" OR DOCKER)
+
+DB_NAME=postgres (whatever you named your db)
+
+DB_TYPE=postgresql
 
 DB_DRIVER=psycopg2
 
