@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.database import Base, engine
+from app.database import Base, engine, SessionLocal
 
 # routers
 from app.endpoints.user_endpoints import router as user_router
+from app.endpoints.stats_endpoints import router as stats_router
 # import more routers
 
 Base.metadata.create_all(engine)
@@ -27,3 +28,4 @@ app.add_middleware(
 # include other routers here
 app.include_router(user_router)
 # app.include_router(...router)
+app.include_router(stats_router)
