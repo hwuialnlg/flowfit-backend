@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.user_schema import UserResponseModel
 from app.db_models.User import User
+from app.db_models.Stats import Stats
 import datetime
 import bcrypt
 from app.database import SessionLocal
@@ -17,15 +18,17 @@ def get_db():
 router = APIRouter(dependencies=[Depends(get_db)])
 
 @router.post("/createUser", response_model=UserResponseModel)
-async def create_user(name: str, password: str, dob: str, email: str, db: Session = Depends(get_db)) -> UserResponseModel:
+async def create_user(name: str, password: str, dob: str, email: str, weight: int = 0, height: int = 0, db: Session = Depends(get_db)) -> UserResponseModel:
 
     salt = bcrypt.gensalt()
     user = User(username=name, salt=salt, password=bcrypt.hashpw(password.encode(), salt), dob=dob, email=email, created_at=datetime.datetime.now())
+    stats = Stats(email=email, weight=weight, height=height, date=datetime.datetime.now())
     # do email validation (prob handled frontend instead)
     # do dob validation
 
     try:
         db.add(user)
+        db.add(stats)
         db.commit()
     except Exception as e:
         # return e
