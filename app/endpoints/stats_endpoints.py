@@ -1,9 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.user_schema import UserResponseModel
 from app.db_models.User import User
 from app.db_models.Stats import Stats
 import datetime
-import bcrypt
 from app.database import SessionLocal
 from fastapi import Depends
 from sqlalchemy.orm import Session
