@@ -1,8 +1,9 @@
 from sqlalchemy import Column, Integer, String, Date, LargeBinary
+from sqlalchemy.orm import relationship
 from app.db_models.BaseModel import BaseModel
 
 class User(BaseModel):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     username = Column(String)
     created_at = Column(Date)
@@ -10,3 +11,5 @@ class User(BaseModel):
     password = Column(LargeBinary, nullable=False)
     dob = Column(Date, nullable=True)
     email = Column(String, primary_key=True)
+
+    exercise = relationship("User", back_populates="user")
