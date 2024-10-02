@@ -18,7 +18,7 @@ def get_db():
 router = APIRouter(dependencies=[Depends(get_db)])
 
 @router.post("/addStats")
-async def addStat(email: str, weight: int = 0, height: int = 0, db: Session = Depends(get_db)):
+async def addStats(email: str, weight: int = 0, height: int = 0, db: Session = Depends(get_db)):
 
     try:
         user = db.query(User).filter(User.email == email).one()
@@ -28,7 +28,6 @@ async def addStat(email: str, weight: int = 0, height: int = 0, db: Session = De
             height = (stats[-1].height if len(stats) > 0 else 0)
         if (not weight):
             weight = (stats[-1].weight if len(stats) > 0 else 0)
-
         stats = Stats(email=email, height=height, weight=weight, date=datetime.datetime.now())
         db.add(stats)
         db.commit()
@@ -43,15 +42,13 @@ async def addStat(email: str, weight: int = 0, height: int = 0, db: Session = De
 async def getStats(email: str, db: Session = Depends(get_db)):
 
     try:
-        stats = db.query(Stats).filter(Stats.email == email)
-        stats = sorted(stats, key=lambda stat: stat.date)
-        if (not height):
-            height = (stats[-1].height if len(stats) > 0 else 0)
-        if (not weight):
-            weight = (stats[-1].weight if len(stats) > 0 else 0)
+        user = db.query(User).filter(User.email == email).one()
+        stats = sorted(user.stats, key=lambda stat: stat.date)
 
-        return {"email": email, "height": height, "weight": weight, "date": stats.date}
-    
+        height = (stats[-1].height if stats and len(stats) > 0 else 0)
+        weight = (stats[-1].weight if stats and len(stats) > 0 else 0)
+
+        return {"email": email, "height": height, "weight": weight, "date": (stats[-1].date if stats and len(stats) > 0 else datetime.datetime.now())}
+        
     except Exception as e:
-        # return e
         return HTTPException(status_code=400, detail="Could not find user")
