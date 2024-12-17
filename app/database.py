@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 load_dotenv()
 
 if (os.getenv("TYPE") == "DOCKER"):
-    engine = create_engine(f'{os.getenv("DB_TYPE")}+{os.getenv("DB_DRIVER")}://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DOCKER_LINK")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}', echo=True)
+    engine = create_engine(f'{os.getenv("DB_TYPE")}+{os.getenv("DB_DRIVER")}://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DOCKER_LINK")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}', echo=False)
 else:
     engine = create_engine(f'{os.getenv("DB_TYPE")}+{os.getenv("DB_DRIVER")}://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_SERVER")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}', echo=True)
 
