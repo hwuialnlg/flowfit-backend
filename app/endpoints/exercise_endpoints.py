@@ -49,7 +49,7 @@ async def get_exercises(current_user: dict = Depends(get_current_user), db: Sess
 async def get_exercise_stats(exercise_id : int, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
 
     try:
-        res = db.query(Exercise).filter(Exercise.email == current_user.get("email") and Exercise.id == exercise_id).one()
+        res = db.query(Exercise).filter(sqlalchemy.and_(Exercise.email == current_user.get("email"), Exercise.id == exercise_id)).one()
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
     
@@ -59,7 +59,7 @@ async def get_exercise_stats(exercise_id : int, current_user: dict = Depends(get
 async def add_exercise_stats(add_exercise_stat : AddExerciseStatModel, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
 
     try:
-        res = db.query(Exercise).filter(Exercise.email == current_user.get("email") and Exercise.id == add_exercise_stat.get("exercise_id")).one()
+        res = db.query(Exercise).filter(sqlalchemy.and_(Exercise.email == current_user.get("email"), Exercise.id == add_exercise_stat.get("exercise_id"))).one()
         exercise_stats = ExerciseStats(exercise_id=res.id, date=datetime.datetime.now(), weight=add_exercise_stat.stat)
         db.add(exercise_stats)
         db.commit()
