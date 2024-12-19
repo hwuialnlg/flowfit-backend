@@ -27,6 +27,8 @@ services:
       - DB_NAME=${DB_NAME}
       - WATCHFILES_FORCE_POLLING=true
       - PYTHONUNBUFFERED=1
+      - ALGORITHM=${ALGORITHM}
+      - SECRET_KEY=${SECRET_KEY}
     ports:
       - 8080:8080
     links:
