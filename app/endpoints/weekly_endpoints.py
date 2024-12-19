@@ -100,13 +100,12 @@ async def get_weekly(current_user: dict = Depends(get_current_user), db: Session
             res[day.name]["exercises"] = []
             dailysOfDay = db.query(Daily).filter(and_(Daily.day == day.id, Daily.email == current_user.get("email"))).all()
             for daily in dailysOfDay:
-                daily = daily.toDict()
-                groupTest = daily.get("group", 0)
-                exerciseTest = daily.get("exercise", 0)
+                groupTest = daily.group
+                exerciseTest = daily.exercise
                 if groupTest:
-                    res[day.name]["groups"].append(daily["group"].toDict())
+                    res[day.name]["groups"].append(groupTest.toDict())
                 if exerciseTest:
-                    res[day.name]["exercises"].append(daily["exercise"].toDict())
+                    res[day.name]["exercises"].append(exerciseTest.toDict())
 
     except Exception:
         raise HTTPException(status_code=400, detail="Something went wrong...")

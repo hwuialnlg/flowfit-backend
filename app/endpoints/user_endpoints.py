@@ -88,6 +88,7 @@ async def login(user : Annotated[OAuth2PasswordRequestForm, Depends()], db: Sess
             token = create_access_token(data={"sub": user.username, "email": res.email})
             return {"access_token": token, "token_type": "bearer", "email": res.email}
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=400, detail="Could not match user/password")
 
     raise HTTPException(status_code=404, detail='Could not match user/password')
