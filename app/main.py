@@ -5,6 +5,7 @@ from app.database import Base, engine
 # routers
 from app.endpoints.user_endpoints import router as user_router
 from app.endpoints.stats_endpoints import router as stats_router
+from app.endpoints.exercise import router as exercise_router
 # import more routers
 
 Base.metadata.create_all(engine)
@@ -29,3 +30,4 @@ app.add_middleware(
 app.include_router(user_router)
 # app.include_router(...router)
 app.include_router(stats_router)
+app.include_router(exercise_router)
