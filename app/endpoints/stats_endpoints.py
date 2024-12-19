@@ -34,7 +34,7 @@ async def addStats(email: str, weight: int = 0, height: int = 0, db: Session = D
 
     except Exception as e:
         # return e
-        return HTTPException(status_code=400, detail="Could not find user")
+        raise HTTPException(status_code=400, detail="Could not find user")
     
 @router.get("/getStats")
 async def getStats(email: str, db: Session = Depends(get_db)):
@@ -49,4 +49,4 @@ async def getStats(email: str, db: Session = Depends(get_db)):
         return {"email": email, "height": height, "weight": weight, "date": (stats[-1].date if stats and len(stats) > 0 else datetime.datetime.now())}
         
     except Exception as e:
-        return HTTPException(status_code=400, detail="Could not find user")
+        raise HTTPException(status_code=400, detail="Could not find user")
