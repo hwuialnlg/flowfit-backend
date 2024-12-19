@@ -17,6 +17,6 @@ class Exercise(BaseModel):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     email = Column(String, ForeignKey('user.email'))
-    exercise_name = Column(String, unique=True, nullable=False)
+    exercise_name = Column(String, nullable=False)
 
     exercisestats = relationship("ExerciseStats", back_populates="exercise")
