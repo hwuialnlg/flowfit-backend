@@ -91,3 +91,10 @@ async def login(user : Annotated[OAuth2PasswordRequestForm, Depends()], db: Sess
         raise HTTPException(status_code=400, detail="Could not match user/password")
 
     raise HTTPException(status_code=404, detail='Could not match user/password')
+
+@router.post("/validateToken")
+async def login_through_token(token):
+    try:
+        return decode_access_token(token)
+    except Exception as e:
+        raise e
