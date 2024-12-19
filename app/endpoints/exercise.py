@@ -1,6 +1,7 @@
 import datetime
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
+import sqlalchemy
 from app.database import SessionLocal
 from sqlalchemy.orm import Session
 
@@ -22,17 +23,17 @@ router = APIRouter(dependencies=[Depends(get_db)])
 @router.post("/createExercise")
 async def create_exercise(exercise_body: ExerciseBody, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        res = db.query(Exercise).filter(Exercise.name == exercise_body.exercise_name and Exercise.email == current_user.get("email")).one()
-        if res:
-            raise HTTPException(status_code=400, detail="Exercise already exists")
-        exercise_db = Exercise(email=current_user.get("email"), exercise_name=exercise_body.exercise_name)
-        db.add(exercise_db)
-        db.commit()
+        try:
+            res = db.query(Exercise).filter(Exercise.email == current_user.get("email")).filter(Exercise.exercise_name == exercise_body.exercise_name).one()
+            raise HTTPException(status_code=400, detail="Exercise already created")
+        except sqlalchemy.exc.NoResultFound:
+            exercise_db = Exercise(email=current_user.get("email"), exercise_name=exercise_body.exercise_name)
+            db.add(exercise_db)
+            db.commit()
+            return {"exercise_name": exercise_db.exercise_name, "email": exercise_db.email}
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
     
-    return {"exercise_name": exercise_db.exercise_name, "email": exercise_db.email}
-
 @router.get("/exercises")
 async def get_exercises(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
 

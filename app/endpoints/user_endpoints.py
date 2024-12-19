@@ -65,7 +65,7 @@ router = APIRouter(dependencies=[Depends(get_db)])
 @router.post("/createUser", response_model=UserResponse)
 async def create_user(user: UserBody, db: Session = Depends(get_db)) -> UserResponse:
 
-    user_db = User(username=user.name, salt="", password=bcrypt.hashpw(user.password.encode(), bcrypt.gensalt()), dob=user.dob, email=user.email, created_at=datetime.datetime.now())
+    user_db = User(username=user.name, password=bcrypt.hashpw(user.password.encode(), bcrypt.gensalt()), dob=user.dob, email=user.email, created_at=datetime.datetime.now())
     stats = Stats(email=user.email, weight=user.weight, height=user.height, date=datetime.datetime.now())
     # do email validation (prob handled frontend instead)
     # do dob validation
