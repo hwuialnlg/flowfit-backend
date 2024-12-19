@@ -31,3 +31,8 @@ async def remove_group_from_daily(current_user: dict = Depends(get_current_user)
 @router.post("/addGroupToDaily")
 async def add_group_to_daily(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     pass
+
+@router.get("/weekly")
+async def get_weekly(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    pass
+
