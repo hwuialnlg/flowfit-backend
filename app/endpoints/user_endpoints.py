@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.user_schema import UserResponseModel
 from app.db_models.User import User
 from app.db_models.Stats import Stats
+from app.pydantic_models.User import User as UserBody
+from app.pydantic_models.User import Login as Login
+from app.response_models.UserResponse import UserResponse
 import datetime
 import bcrypt
 from app.database import SessionLocal
@@ -17,33 +19,32 @@ def get_db():
 
 router = APIRouter(dependencies=[Depends(get_db)])
 
-@router.post("/createUser", response_model=UserResponseModel)
-async def create_user(name: str, password: str, dob: str, email: str, weight: int = 0, height: int = 0, db: Session = Depends(get_db)) -> UserResponseModel:
+@router.post("/createUser", response_model=UserResponse)
+async def create_user(user: UserBody, db: Session = Depends(get_db)) -> UserResponse:
 
     salt = bcrypt.gensalt()
-    user = User(username=name, salt=salt, password=bcrypt.hashpw(password.encode(), salt), dob=dob, email=email, created_at=datetime.datetime.now())
-    stats = Stats(email=email, weight=weight, height=height, date=datetime.datetime.now())
+    user_db = User(username=user.name, salt=salt, password=bcrypt.hashpw(user.password.encode(), salt), dob=user.dob, email=user.email, created_at=datetime.datetime.now())
+    stats = Stats(email=user.email, weight=user.weight, height=user.height, date=datetime.datetime.now())
     # do email validation (prob handled frontend instead)
     # do dob validation
 
     try:
-        db.add(user)
+        db.add(user_db)
         db.add(stats)
         db.commit()
     except Exception as e:
         # return e
-        return HTTPException(status_code=400, detail="Could not create user")
+        raise HTTPException(status_code=400, detail="Could not create user")
 
-    return UserResponseModel(name=name, dob=dob, email=email)
+    return UserResponse(email=user.email, name=user.name)
 
-@router.post("/validateUser")
-async def validate_user(email: str, password: str, db: Session = Depends(get_db)):
-
+@router.post("/validateUser", response_model=UserResponse)
+async def validate_user(user : Login, db: Session = Depends(get_db)):
     try:
-        res = db.query(User).filter(User.email == email).one()
-        if (bcrypt.hashpw(password.encode(), res.salt) == res.password):
-            return {res.username, res.email, res.email}
+        res = db.query(User).filter(User.email == user.email).one()
+        if (bcrypt.hashpw(user.password.encode(), res.salt) == res.password):
+            return {"email": res.email, "name": res.username}
     except Exception:
-        return HTTPException(status_code=400, detail="Could not match user/password")
+        raise HTTPException(status_code=400, detail="Could not match user/password")
 
     raise HTTPException(status_code=404, detail='Could not match user/password')
