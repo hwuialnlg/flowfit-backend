@@ -23,3 +23,7 @@ DB_USER=
 DB_PASSWORD=
 
 DOCKER_LINK=flowfit-postgres
+
+SECRET_KEY=
+
+ALGORITHM=
