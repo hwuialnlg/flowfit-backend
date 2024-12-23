@@ -22,18 +22,19 @@ router = APIRouter(dependencies=[Depends(get_db)])
 
 @router.post("/addExerciseToDaily")
 async def add_exercise_to_daily(daily: DailyBody, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
-    try:
-        dayId = db.query(Day).filter(Day.name == daily.day).one()
-        dailyAdd = Daily(
-            email=current_user.get("email"),
-            day=dayId.id,
-            exercise_id=daily.exercise_id
-        )
-        db.add(dailyAdd)
-        db.commit()
 
-    except Exception:
-        raise HTTPException(status_code=400, detail="Something went wrong...")
+    dayId = db.query(Day).filter(Day.name == daily.day).one()
+    checkExercises = db.query(Daily).filter(and_(and_(Daily.email == current_user.get("email"), Daily.day == dayId.id), Daily.exercise_id == daily.exercise_id))
+    if checkExercises:
+        raise HTTPException(status_code=400, detail="Duplicate Exercise Entry")
+    dailyAdd = Daily(
+        email=current_user.get("email"),
+        day=dayId.id,
+        exercise_id=daily.exercise_id
+    )
+    db.add(dailyAdd)
+    db.commit()
+
     
     return dailyAdd.toDict()
 
@@ -74,19 +75,17 @@ async def remove_group_from_daily(daily: DailyBody, current_user: dict = Depends
 
 @router.post("/addGroupToDaily")
 async def add_group_to_daily(daily: DailyBody, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
-    try:
-        dayId = db.query(Day).filter(Day.name == daily.day).one()
-        dailyAdd = Daily(
-            email=current_user.get("email"),
-            day=dayId.id,
-            group_id=daily.group_id
-        )
-        db.add(dailyAdd)
-        db.commit()
-
-    except Exception:
-        raise HTTPException(status_code=400, detail="Something went wrong...")
-    
+    dayId = db.query(Day).filter(Day.name == daily.day).one()
+    checkGroups = db.query(Daily).filter(and_(and_(Daily.day == dayId.id, Daily.email == current_user.get("email")), Daily.group_id == daily.group_id)).first()
+    if checkGroups:
+        raise HTTPException(status_code=400, detail="Duplicate Entries")
+    dailyAdd = Daily(
+        email=current_user.get("email"),
+        day=dayId.id,
+        group_id=daily.group_id
+    )
+    db.add(dailyAdd)
+    db.commit()
     return dailyAdd.toDict()
 
 @router.get("/weekly")

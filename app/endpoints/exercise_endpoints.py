@@ -5,6 +5,7 @@ import sqlalchemy
 from app.database import SessionLocal
 from sqlalchemy.orm import Session
 
+from app.db_models.Day import Group
 from app.db_models.Exercise import Exercise
 from app.db_models.Exercise import ExerciseStats
 from app.endpoints.user_endpoints import get_current_user
@@ -45,6 +46,13 @@ async def get_exercises(current_user: dict = Depends(get_current_user), db: Sess
     
     return {"email": current_user.get("email"), "exercises": [exercise.toDict() for exercise in res]}
 
+@router.get("/groups")
+async def get_exercises(current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        return {"groups" : [group.toDict() for group in db.query(Group).all()]}
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=e)
+    
 @router.get("/exercise_stats")
 async def get_exercise_stats(exercise_id : int, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
 
