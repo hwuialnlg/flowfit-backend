@@ -46,7 +46,7 @@ async def remove_exercise_from_daily(daily: DailyBody, current_user: dict = Depe
                 and_(Daily.email == current_user.get("email"), Daily.day == dayId.id),
                 Daily.exercise_id == daily.exercise_id
             )
-        )
+        ).first()
         db.delete(exerciseToRemove)
         db.commit()
 
@@ -63,7 +63,7 @@ async def remove_group_from_daily(daily: DailyBody, current_user: dict = Depends
             and_(and_(Daily.email == current_user.get("email"), Daily.day == dayId.id),
                 Daily.group_id == daily.group_id
             )
-        ).one()
+        ).first()
         db.delete(groupToRemove)
         db.commit()
 
