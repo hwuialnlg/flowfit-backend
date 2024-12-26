@@ -67,18 +67,18 @@ async def create_user(user: UserBody, db: Session = Depends(get_db)) -> UserResp
 
     user_db = User(username=user.name, password=bcrypt.hashpw(user.password.encode(), bcrypt.gensalt()), dob=user.dob, email=user.email, created_at=datetime.datetime.now())
     stats = Stats(email=user.email, weight=user.weight, height=user.height, date=datetime.datetime.now())
-    # do email validation (prob handled frontend instead)
-    # do dob validation
 
     try:
         db.add(user_db)
         db.add(stats)
         db.commit()
+        db.refresh(user_db)
+        token = create_access_token(data={"sub": user.email, "email": user.email})
     except Exception as e:
         # return e
         raise HTTPException(status_code=400, detail="Could not create user")
 
-    return UserResponse(email=user.email, name=user.name)
+    return UserResponse(email=user.email, name=user.name, access_token=token)
 
 @router.post("/token")
 async def login(user : Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
