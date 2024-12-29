@@ -68,7 +68,7 @@ async def add_exercise_stats(add_exercise_stat : AddExerciseStatModel, current_u
 
     try:
         res = db.query(Exercise).filter(sqlalchemy.and_(Exercise.email == current_user.get("email"), Exercise.id == add_exercise_stat.exercise_id)).one()
-        exercise_stats = ExerciseStats(exercise_id=res.id, date=(datetime.datetime.now() if not add_exercise_stat.date else datetime.datetime.strptime(add_exercise_stat.date, "%Y-%m-%d")), weight=add_exercise_stat.stat)
+        exercise_stats = ExerciseStats(exercise_id=res.id, date=(datetime.datetime.now() if add_exercise_stat.date == None else datetime.datetime.strptime(add_exercise_stat.date, "%Y-%m-%d")), weight=add_exercise_stat.stat)
         db.add(exercise_stats)
         db.commit()
     except Exception as e:
