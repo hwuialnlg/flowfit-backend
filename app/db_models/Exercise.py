@@ -9,7 +9,6 @@ class ExerciseStats(BaseModel):
     exercise_id = Column(Integer, ForeignKey('exercise.id'))
     date = Column(Date, nullable=False)
     weight = Column(Integer, nullable=False)
-
     exercise = relationship("Exercise", back_populates="exercisestats")
 
 class Exercise(BaseModel):
