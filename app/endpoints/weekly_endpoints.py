@@ -24,7 +24,7 @@ router = APIRouter(dependencies=[Depends(get_db)])
 async def add_exercise_to_daily(daily: DailyBody, current_user: dict = Depends(get_current_user), db: Session = Depends(get_db)):
 
     dayId = db.query(Day).filter(Day.name == daily.day).one()
-    checkExercises = db.query(Daily).filter(and_(and_(Daily.email == current_user.get("email"), Daily.day == dayId.id), Daily.exercise_id == daily.exercise_id))
+    checkExercises = db.query(Daily).filter(and_(and_(Daily.email == current_user.get("email"), Daily.day == dayId.id), Daily.exercise_id == daily.exercise_id)).first()
     if checkExercises:
         raise HTTPException(status_code=400, detail="Duplicate Exercise Entry")
     dailyAdd = Daily(
