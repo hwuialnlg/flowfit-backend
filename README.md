@@ -1,3 +1,11 @@
+### Key Features
+- JWT auth logins
+- Generate charts with specific labels
+- Create exercises and log data for each
+- Create an exercise schedule for days of the week
+- Sign up and sign ins
+- Dockerized
+
 Backend for Flowfit: JWT auth logins, weekly schedules, tracking of exercises (such as dates + weights)
 
 Virtual environment --> install postgresql
