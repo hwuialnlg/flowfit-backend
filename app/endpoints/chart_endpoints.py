@@ -1,4 +1,5 @@
 import datetime
+import calendar
 from dateutil.relativedelta import relativedelta
 from fastapi import APIRouter, HTTPException
 from fastapi import Depends
@@ -26,15 +27,15 @@ async def get_chart(exercise_id: int, time: str = "1M", current_user: dict = Dep
         end_range = datetime.datetime.now()
         start_range = None
         if (time == "ALL"):
-            return {"stats": [stat.toDict() for stat in res.exercisestats]}
+            return {"stats": list(sorted([stat.toDict() for stat in res.exercisestats], key=lambda m: m["date"]))}
         elif (time == "1M"):
+            # need to cleanup returned calendar.monthrange stuff
             start_range = end_range - relativedelta(months=1)
         elif (time == "3M"):
-            start_range = end_range - relativedelta(months=3)
+            start_range = end_range - relativedelta(months=2)
         elif (time == "1Y"):
             start_range = end_range - relativedelta(years=1)
-
-        return {"stats" : [stat.toDict() for stat in res.exercisestats if start_range.date() <= stat.date <= end_range.date()]}
+        return {"stats" : list(sorted([stat.toDict() for stat in res.exercisestats if start_range.date() <= stat.date <= end_range.date()], key=lambda m: m["date"]))}
 
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
