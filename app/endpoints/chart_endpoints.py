@@ -29,8 +29,12 @@ async def get_chart(exercise_id: int, time: str = "1M", current_user: dict = Dep
         copy_start_range = None
         labels = []
         if (time == "ALL"):
+<<<<<<< Updated upstream
             labels = list({i.date.year for i in res.exercisestats})
             return {"stats": [stat.toDict() for stat in res.exercisestats], "labels": labels}
+=======
+            return {"stats": list(sorted([stat.toDict() for stat in res.exercisestats], key=lambda m: m["date"]))}
+>>>>>>> Stashed changes
         elif (time == "1M"):
             # need to cleanup returned calendar.monthrange stuff
             start_range = end_range - relativedelta(months=1)
@@ -67,7 +71,11 @@ async def get_chart(exercise_id: int, time: str = "1M", current_user: dict = Dep
                     start_range += datetime.timedelta(months=1)
                 labels.extend([f"{end_range.year}-{i+1}" for i in range(end_range.month)])
 
+<<<<<<< Updated upstream
         return {"stats" : [stat.toDict() for stat in res.exercisestats if copy_start_range.date() <= stat.date <= end_range.date()], "labels": labels}
+=======
+        return {"stats" : list(sorted([stat.toDict() for stat in res.exercisestats if start_range.date() <= stat.date <= end_range.date()], key=lambda m: m["date"]))}
+>>>>>>> Stashed changes
 
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
